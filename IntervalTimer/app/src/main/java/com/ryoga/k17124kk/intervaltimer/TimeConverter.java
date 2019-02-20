@@ -3,7 +3,6 @@ package com.ryoga.k17124kk.intervaltimer;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.util.Log;
 
 public class TimeConverter extends BaseObservable {
     private int hour = 0;//表示する　時
@@ -17,17 +16,19 @@ public class TimeConverter extends BaseObservable {
     private int _s = 0;//合計秒数
 
 
-    public enum TimerStatus {SETTING, COUNTDOWN, INTERVAL}
+    //状態管理用 Enum
+    public enum TimerStatus {
+        SETTING, COUNTDOWN, INTERVAL
+    }
 
+    private TimerStatus currentStatus = TimerStatus.SETTING;//現在の状態
 
-    private TimerStatus currentStatus = TimerStatus.SETTING;
+    //バインディング
     @Bindable
-    public boolean isRunnig = false;
-    @Bindable
-    public boolean isStart = false;
+    public boolean isRunnig = false;//設定中なのかそうじゃないのか
 
     @Bindable
-    public String timerString;
+    public String timerString;//時間描画用　00:00:00の形式のやつ
 
 
     public TimeConverter() {
@@ -78,7 +79,6 @@ public class TimeConverter extends BaseObservable {
         this.hour = hour;
         this.minute = minute;
         this.second = second;
-        Log.d("MYE", this.hour + ";::" + this.minute + ";;;" + this.second);
     }
 
 
@@ -129,6 +129,7 @@ public class TimeConverter extends BaseObservable {
     }
 
 
+    //バインディングされたtextView用のて着ると更新と通知
     public void updateTime() {
         timerString = getTime_String();
         notifyPropertyChanged(BR.timerString);
@@ -138,11 +139,13 @@ public class TimeConverter extends BaseObservable {
         return currentStatus;
     }
 
+    //00:00:00の形式でStringを返す
     private String getTime_String() {
         return getHour() + " : " + getMinute() + " : " + getSecond();
     }
 
 
+    //状態の更新とisRunnnigの更新
     public void updateStatus(TimerStatus status) {
         currentStatus = status;
 
@@ -160,6 +163,7 @@ public class TimeConverter extends BaseObservable {
                 break;
             }
         }
+        //更新通知
         notifyPropertyChanged(BR.isRunnig);
     }
 
