@@ -1,6 +1,7 @@
 package com.ryoga.k17124kk.intervaltimer;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -8,19 +9,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
+
+import com.ryoga.k17124kk.intervaltimer.databinding.FragmentTopBinding;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 
 public class TopFragment extends Fragment {
@@ -28,6 +30,7 @@ public class TopFragment extends Fragment {
     private Handler handler;
     private MediaPlayer mediaPlayer;
 
+    private FragmentTopBinding binding;
 
     public TopFragment() {
         // Required empty public constructor
@@ -50,15 +53,15 @@ public class TopFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_top, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_top, container, false);
 
+        return binding.getRoot();
     }
 
     //onCreateViewの後に呼ばれるメソッド
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         //hundlerのコンストラクタ呼び出し
         this.handler = new Handler();
@@ -96,18 +99,8 @@ public class TopFragment extends Fragment {
 
 
     class Task extends TimerTask {
-        private TextView textView_time; //カウント時間表示
-        private Spinner spinner_h;//時:設定用Spinner
-        private Spinner spinner_m;//分:設定用Spinner
-        private Spinner spinner_s;//秒:設定用Spinner
-        private Spinner spinner_interval;//インターバル:設定用Spinner
-
-        private Button button_start;//スタートボタン
-        private Button button_stop;//ストップボタン
-
 
         private int interval;//カウントダウンループのインターバル
-
 
         private TimeConverter timeConverter;
         String status = "SETTING";//"COUNTDOWN"  "INTERVAL"
@@ -119,27 +112,25 @@ public class TopFragment extends Fragment {
 
 
             //ViewからとるのでgetView()
-            button_start = getView().findViewById(R.id.button_start);
-            button_start.setOnClickListener(new View.OnClickListener() {
+            binding.buttonStart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     status = "COUNTDOWN";
 
-                    button_start.setVisibility(button_start.INVISIBLE);
-                    button_stop.setVisibility(button_stop.VISIBLE);
+                    binding.buttonStart.setVisibility(INVISIBLE);
+                    binding.buttonStart.setVisibility(VISIBLE);
                     //Spinnerを無効に
                     setEnable(false);
                 }
             });
 
-            button_stop = getView().findViewById(R.id.button_stop);
-            button_stop.setOnClickListener(new View.OnClickListener() {
+            binding.buttonStop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     status = "SETTING";
 
-                    button_start.setVisibility(button_start.VISIBLE);
-                    button_stop.setVisibility(button_stop.INVISIBLE);
+                    binding.buttonStart.setVisibility(VISIBLE);
+                    binding.buttonStop.setVisibility(INVISIBLE);
                     //Spinnerを有効に
                     setEnable(true);
 
@@ -148,19 +139,14 @@ public class TopFragment extends Fragment {
             });
 
 
-            spinner_h = getView().findViewById(R.id.spinner_h);
-            spinner_m = getView().findViewById(R.id.spinner_m);
-            spinner_s = getView().findViewById(R.id.spinner_s);
-            spinner_interval = getView().findViewById(R.id.spinner_interval);
-
         }
 
         //SpinnerのEnable変更
         public void setEnable(boolean b) {
-            spinner_h.setEnabled(b);
-            spinner_m.setEnabled(b);
-            spinner_s.setEnabled(b);
-            spinner_interval.setEnabled(b);
+            binding.spinnerH.setEnabled(b);
+            binding.spinnerM.setEnabled(b);
+            binding.spinnerS.setEnabled(b);
+            binding.spinnerInterval.setEnabled(b);
         }
 
         @Override
@@ -168,7 +154,6 @@ public class TopFragment extends Fragment {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    textView_time = getView().findViewById(R.id.textView_time);
 
                     if (status.equals("SETTING")) {
                         inspectionSpinner();
@@ -177,7 +162,7 @@ public class TopFragment extends Fragment {
                         setTimeConverter_HMS();
                         //各時間を退避
                         timeConverter.evacuateTime();
-                        textView_time.setText(timeConverter.getHour() + " : " + timeConverter.getMinute() + " : " + timeConverter.getSecond());
+                        binding.textViewTime.setText(timeConverter.getHour() + " : " + timeConverter.getMinute() + " : " + timeConverter.getSecond());
 
                     } else if (status.equals("COUNTDOWN")) {
                         //トータル時間から１秒減らす
@@ -186,7 +171,7 @@ public class TopFragment extends Fragment {
                         timeConverter.distribution();
 
 
-                        textView_time.setText(timeConverter.getHour() + " : " + timeConverter.getMinute() + " : " + timeConverter.getSecond());
+                        binding.textViewTime.setText(timeConverter.getHour() + " : " + timeConverter.getMinute() + " : " + timeConverter.getSecond());
                         Log.d("MYE", timeConverter.toString());
                         if (timeConverter.get_S() <= 0) {
                             status = "INTERVAL";
@@ -217,28 +202,24 @@ public class TopFragment extends Fragment {
         }
 
         public void inspectionSpinner() {
-            if (spinner_h.getSelectedItemId() == 0 && spinner_m.getSelectedItemId() == 0 && spinner_s.getSelectedItemId() == 0) {
-                button_start.setVisibility(View.INVISIBLE);
+            if (binding.spinnerH.getSelectedItemId() == 0 && binding.spinnerM.getSelectedItemId() == 0 && binding.spinnerS.getSelectedItemId() == 0) {
+                binding.buttonStart.setVisibility(INVISIBLE);
             } else {
-                button_start.setVisibility(View.VISIBLE);
+                binding.buttonStart.setVisibility(VISIBLE);
             }
         }
 
 
         //各時間をスピナーから設定
         public void setTimeConverter_HMS() {
-            Log.d("MYE", "setTimeConvert");
-            timeConverter.setHour(spinner_h.getSelectedItemPosition());
-            timeConverter.setMinute(spinner_m.getSelectedItemPosition());
-            timeConverter.setSecond(spinner_s.getSelectedItemPosition());
-            interval = spinner_interval.getSelectedItemPosition();
+            timeConverter.setTimes(binding.spinnerH.getSelectedItemPosition(), binding.spinnerM.getSelectedItemPosition(), binding.spinnerS.getSelectedItemPosition());
+            interval = binding.spinnerInterval.getSelectedItemPosition();
         }
 
 
         //背景の色をデフォルトの白に
         public void backgroundColorChange_default() {
-            ConstraintLayout constraintLayout = getView().findViewById(R.id.constrainLayout);
-            constraintLayout.setBackgroundColor(Color.WHITE);
+            binding.frameLayout.setBackgroundColor(Color.WHITE);
         }
 
         //ランダムに背景の色を変える
@@ -246,7 +227,6 @@ public class TopFragment extends Fragment {
             Random rnd = new Random();
             int color = Color.RED;
 
-            ConstraintLayout constraintLayout = getView().findViewById(R.id.constrainLayout);
             switch (rnd.nextInt(6)) {
                 case 0: {
                     color = Color.RED;
@@ -273,7 +253,7 @@ public class TopFragment extends Fragment {
                     break;
                 }
             }
-            constraintLayout.setBackgroundColor(color);
+            binding.frameLayout.setBackgroundColor(color);
         }
     }
 

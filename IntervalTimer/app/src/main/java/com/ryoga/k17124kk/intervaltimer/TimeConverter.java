@@ -55,6 +55,14 @@ public class TimeConverter {
         culculationTotalSecond();
     }
 
+
+    public void setTimes(int hour, int minute, int second) {
+        this.hour = hour;
+        this.minute = minute;
+        this.second = second;
+    }
+
+
     public int get_S() {
         return _s;
     }
@@ -64,37 +72,38 @@ public class TimeConverter {
     }
 
     //時分秒からトータルの秒に変換
-    public void culculationTotalSecond(){
-        _s = this.hour*360 + this.minute*60 + this.second;
+    public void culculationTotalSecond() {
+        _s = this.hour * 360 + this.minute * 60 + this.second;
     }
-    public void setTotalSecond(int totalSecond){
+
+    public void setTotalSecond(int totalSecond) {
         _s = totalSecond;
     }
 
-    public int getTotalSecond(){
+    public int getTotalSecond() {
         return this._s;
     }
 
 
     //トータルの秒から時分秒に変換
-    public void distribution(){
-        this.hour = (int)Math.floor(_s / 360);
+    public void distribution() {
+        this.hour = (int) Math.floor(_s / 360);
         _s = _s - (this.hour * 360);
 
-        this.minute = (int)Math.floor(_s / 60);
+        this.minute = (int) Math.floor(_s / 60);
         _s = _s - (this.minute * 60);
 
         this.second = _s;
     }
 
-    public void evacuateTime(){
+    public void evacuateTime() {
         this.hour_Evacuate = this.hour;
         this.minute_Evacuate = this.minute;
         this.second_Evacuate = this.second;
     }
 
     //退避させていた各時間から設定を戻す
-    public void returnSetting(){
+    public void returnSetting() {
         this.hour = this.hour_Evacuate;
         this.minute = this.minute_Evacuate;
         this.second = this.second_Evacuate;

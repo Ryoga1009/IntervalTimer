@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
+    dataBinding {
+        enabled = true
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.ryoga.k17124kk.intervaltimer"
@@ -10,6 +13,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
