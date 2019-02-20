@@ -21,8 +21,9 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
+import static com.ryoga.k17124kk.intervaltimer.TimeConverter.TimerStatus.COUNTDOWN;
+import static com.ryoga.k17124kk.intervaltimer.TimeConverter.TimerStatus.INTERVAL;
+import static com.ryoga.k17124kk.intervaltimer.TimeConverter.TimerStatus.SETTING;
 
 
 public class TopFragment extends Fragment {
@@ -91,8 +92,10 @@ public class TopFragment extends Fragment {
 
     private void setTimer() {
         Timer timer = new Timer();
+
         //遅延０ms  10000msごとに呼び出し　
         timer.scheduleAtFixedRate(new Task(), 0, 1000);
+
         Log.d("myError", "setTimer");
 
     }
@@ -103,36 +106,35 @@ public class TopFragment extends Fragment {
         private int interval;//カウントダウンループのインターバル
 
         private TimeConverter timeConverter;
-        String status = "SETTING";//"COUNTDOWN"  "INTERVAL"
+//        String status = "SETTING";//"COUNTDOWN"  "INTERVAL"
 
 
         public Task() {
 
             timeConverter = new TimeConverter();
-
+            binding.setTimeconverter(timeConverter);
 
             //ViewからとるのでgetView()
             binding.buttonStart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    status = "COUNTDOWN";
 
-                    binding.buttonStart.setVisibility(INVISIBLE);
-                    binding.buttonStart.setVisibility(VISIBLE);
-                    //Spinnerを無効に
-                    setEnable(false);
+                    if (!isSpinnerSelected()) {
+
+                        timeConverter.updateStatus(COUNTDOWN);
+                    }
+
                 }
             });
 
             binding.buttonStop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    status = "SETTING";
+//                    status = "SETTING";
+                    timeConverter.updateStatus(SETTING);
 
-                    binding.buttonStart.setVisibility(VISIBLE);
-                    binding.buttonStop.setVisibility(INVISIBLE);
                     //Spinnerを有効に
-                    setEnable(true);
+//                    setEnable(true);
 
                     backgroundColorChange_default();
                 }
@@ -141,43 +143,37 @@ public class TopFragment extends Fragment {
 
         }
 
-        //SpinnerのEnable変更
-        public void setEnable(boolean b) {
-            binding.spinnerH.setEnabled(b);
-            binding.spinnerM.setEnabled(b);
-            binding.spinnerS.setEnabled(b);
-            binding.spinnerInterval.setEnabled(b);
-        }
 
         @Override
         public void run() {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d("MYE", "run");
 
-                    if (status.equals("SETTING")) {
-                        inspectionSpinner();
+                    if (timeConverter.getCurrentStatus() == SETTING) {
 
                         //各時間の設定
                         setTimeConverter_HMS();
                         //各時間を退避
                         timeConverter.evacuateTime();
-                        binding.textViewTime.setText(timeConverter.getHour() + " : " + timeConverter.getMinute() + " : " + timeConverter.getSecond());
+                        timeConverter.updateTime();
+                        timeConverter.culculationTotalSecond();
 
-                    } else if (status.equals("COUNTDOWN")) {
+                    } else if (timeConverter.getCurrentStatus() == COUNTDOWN) {
                         //トータル時間から１秒減らす
                         timeConverter.setTotalSecond(timeConverter.getTotalSecond() - 1);
                         //トータル時間から時分秒に変換
                         timeConverter.distribution();
 
 
-                        binding.textViewTime.setText(timeConverter.getHour() + " : " + timeConverter.getMinute() + " : " + timeConverter.getSecond());
+                        timeConverter.updateTime();
                         Log.d("MYE", timeConverter.toString());
                         if (timeConverter.get_S() <= 0) {
-                            status = "INTERVAL";
+                            timeConverter.updateStatus(INTERVAL);
                         }
 
-                    } else if (status.equals("INTERVAL")) {
+                    } else if (timeConverter.getCurrentStatus() == INTERVAL) {
                         //音の再生
                         mediaPlayer.start();
 
@@ -187,32 +183,32 @@ public class TopFragment extends Fragment {
                         interval--;
 
                         if (interval < 0) {
-                            status = "COUNTDOWN";
+//                            status = "COUNTDOWN";
+                            timeConverter.updateStatus(COUNTDOWN);
                             setTimeConverter_HMS();
+                            timeConverter.culculationTotalSecond();
 
                             mediaPlayer.pause();
                             mediaPlayer.seekTo(0); // 再生位置を0ミリ秒に指定
 
                             //背景色を白に戻す
                             backgroundColorChange_default();
+
                         }
                     }
                 }
             });
         }
 
-        public void inspectionSpinner() {
-            if (binding.spinnerH.getSelectedItemId() == 0 && binding.spinnerM.getSelectedItemId() == 0 && binding.spinnerS.getSelectedItemId() == 0) {
-                binding.buttonStart.setVisibility(INVISIBLE);
-            } else {
-                binding.buttonStart.setVisibility(VISIBLE);
-            }
+        public boolean isSpinnerSelected() {
+            return (binding.spinnerH.getSelectedItemId() == 0 && binding.spinnerM.getSelectedItemId() == 0 && binding.spinnerS.getSelectedItemId() == 0);
         }
 
 
         //各時間をスピナーから設定
         public void setTimeConverter_HMS() {
             timeConverter.setTimes(binding.spinnerH.getSelectedItemPosition(), binding.spinnerM.getSelectedItemPosition(), binding.spinnerS.getSelectedItemPosition());
+            Log.d("MYE", binding.spinnerH.getSelectedItem() + ";" + binding.spinnerM.getSelectedItem() + ";" + binding.spinnerH.getSelectedItem());
             interval = binding.spinnerInterval.getSelectedItemPosition();
         }
 
