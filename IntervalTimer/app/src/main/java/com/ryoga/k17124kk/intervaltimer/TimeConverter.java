@@ -1,7 +1,11 @@
 package com.ryoga.k17124kk.intervaltimer;
 
 
-public class TimeConverter {
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.util.Log;
+
+public class TimeConverter extends BaseObservable {
     private int hour = 0;//表示する　時
     private int minute = 0;
     private int second = 0;
@@ -13,7 +17,21 @@ public class TimeConverter {
     private int _s = 0;//合計秒数
 
 
+    public enum TimerStatus {SETTING, COUNTDOWN, INTERVAL}
+
+
+    private TimerStatus currentStatus = TimerStatus.SETTING;
+    @Bindable
+    public boolean isRunnig = false;
+    @Bindable
+    public boolean isStart = false;
+
+    @Bindable
+    public String timerString;
+
+
     public TimeConverter() {
+        updateTime();
     }
 
     public TimeConverter(int hour, int minute, int second) {
@@ -60,6 +78,7 @@ public class TimeConverter {
         this.hour = hour;
         this.minute = minute;
         this.second = second;
+        Log.d("MYE", this.hour + ";::" + this.minute + ";;;" + this.second);
     }
 
 
@@ -107,6 +126,41 @@ public class TimeConverter {
         this.hour = this.hour_Evacuate;
         this.minute = this.minute_Evacuate;
         this.second = this.second_Evacuate;
+    }
+
+
+    public void updateTime() {
+        timerString = getTime_String();
+        notifyPropertyChanged(BR.timerString);
+    }
+
+    public TimerStatus getCurrentStatus() {
+        return currentStatus;
+    }
+
+    private String getTime_String() {
+        return getHour() + " : " + getMinute() + " : " + getSecond();
+    }
+
+
+    public void updateStatus(TimerStatus status) {
+        currentStatus = status;
+
+        switch (currentStatus) {
+            case SETTING: {
+                isRunnig = false;
+                break;
+            }
+            case COUNTDOWN: {
+                isRunnig = true;
+                break;
+            }
+            case INTERVAL: {
+                isRunnig = true;
+                break;
+            }
+        }
+        notifyPropertyChanged(BR.isRunnig);
     }
 
 

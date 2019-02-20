@@ -2,7 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
 
+        <variable
+            name="timeconverter"
+            type="com.ryoga.k17124kk.intervaltimer.TimeConverter" />
+
+
+        <import type="android.view.View" />
+
+        <import type="com.ryoga.k17124kk.intervaltimer.R" />
+    </data>
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -17,8 +27,7 @@
             android:layout_height="495dp"
             android:orientation="vertical"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp"
-            >
+            tools:layout_editor_absoluteY="8dp">
 
             <TextView
                 android:id="@+id/textView_time"
@@ -26,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="80dp"
                 android:paddingBottom="100dp"
-                android:text="00 : 00 : 00"
+                android:text="@{timeconverter.timerString}"
                 android:textAlignment="center"
                 android:textSize="56sp" />
 
@@ -70,6 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:enabled="@{!timeconverter.isRunnig}"
                     android:entries="@array/time" />
 
                 <Spinner
@@ -77,6 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:enabled="@{!timeconverter.isRunnig}"
                     android:entries="@array/time" />
 
                 <Spinner
@@ -84,6 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:enabled="@{!timeconverter.isRunnig}"
                     android:entries="@array/time" />
             </LinearLayout>
 
@@ -106,6 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:enabled="@{!timeconverter.isRunnig}"
                     android:entries="@array/time" />
             </LinearLayout>
 
@@ -120,16 +133,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Stop"
-                    android:visibility="invisible" />
+                    android:enabled="@{timeconverter.isRunnig}"
+                    android:text="Stop" />
 
                 <Button
                     android:id="@+id/button_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="start"
-                    android:visibility="invisible" />
+                    android:enabled="@{!timeconverter.isRunnig}"
+                    android:text="start" />
             </LinearLayout>
 
         </LinearLayout>
