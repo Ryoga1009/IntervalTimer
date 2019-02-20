@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
         //スリープしないよう固定
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        //Fragmentの置き換えとコミット
         getSupportFragmentManager().beginTransaction().replace(R.id.constrainLayout, TopFragment.newInstance()).commit();
 
 

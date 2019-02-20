@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 状態によって読み込み先xmlを切り替える -->
+<selector xmlns:xmls="http://schemas.android.com/apk/res/android">
+    <item xmls:drawable="@drawable/button_stop_enable" xmls:state_enabled="true" />
+    <item xmls:drawable="@drawable/button_stop_disable" xmls:state_enabled="false" />
+</selector>

@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ryoga.k17124kk.intervaltimer.databinding.FragmentTopBinding;
 
@@ -53,7 +54,8 @@ public class TopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
+
+        //Fragmentをバインディング -> findViewById()等省略可能に
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_top, container, false);
 
         return binding.getRoot();
@@ -77,7 +79,9 @@ public class TopFragment extends Fragment {
         super.onAttach(context);
 
         mediaPlayer = MediaPlayer.create(context, R.raw.alerm);
+        //渡されたcontextはMainActivityを継承しているかチェック
         if (context instanceof MainActivity) {
+            //MainActivityにキャストして音の設定をする
             ((MainActivity) context).setVolumeControlStream(AudioManager.STREAM_MUSIC);
         }
 
@@ -96,7 +100,6 @@ public class TopFragment extends Fragment {
         //遅延０ms  10000msごとに呼び出し　
         timer.scheduleAtFixedRate(new Task(), 0, 1000);
 
-        Log.d("myError", "setTimer");
 
     }
 
@@ -119,9 +122,11 @@ public class TopFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
+                    //スピナーが全部0かどうかのチェック
                     if (!isSpinnerSelected()) {
-
                         timeConverter.updateStatus(COUNTDOWN);
+                    } else {
+                        Toast.makeText(getContext(), "時間を設定してください", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -130,12 +135,8 @@ public class TopFragment extends Fragment {
             binding.buttonStop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    status = "SETTING";
+
                     timeConverter.updateStatus(SETTING);
-
-                    //Spinnerを有効に
-//                    setEnable(true);
-
                     backgroundColorChange_default();
                 }
             });
@@ -165,10 +166,8 @@ public class TopFragment extends Fragment {
                         timeConverter.setTotalSecond(timeConverter.getTotalSecond() - 1);
                         //トータル時間から時分秒に変換
                         timeConverter.distribution();
-
-
                         timeConverter.updateTime();
-                        Log.d("MYE", timeConverter.toString());
+
                         if (timeConverter.get_S() <= 0) {
                             timeConverter.updateStatus(INTERVAL);
                         }
@@ -208,7 +207,6 @@ public class TopFragment extends Fragment {
         //各時間をスピナーから設定
         public void setTimeConverter_HMS() {
             timeConverter.setTimes(binding.spinnerH.getSelectedItemPosition(), binding.spinnerM.getSelectedItemPosition(), binding.spinnerS.getSelectedItemPosition());
-            Log.d("MYE", binding.spinnerH.getSelectedItem() + ";" + binding.spinnerM.getSelectedItem() + ";" + binding.spinnerH.getSelectedItem());
             interval = binding.spinnerInterval.getSelectedItemPosition();
         }
 
