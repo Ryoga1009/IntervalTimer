@@ -123,6 +123,7 @@ public class TopFragment extends Fragment {
 
                     BallAnimator.startAnimation(binding.AnimationArea.getWidth(), binding.AnimationArea.getHeight(), binding.ball);
 
+
                     //スピナーが全部0かどうかのチェック
                     if (!isSpinnerSelected()) {
                         timeConverter.updateStatus(COUNTDOWN);
@@ -137,8 +138,11 @@ public class TopFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
+                    BallAnimator.cancelAnimation(binding.ball);
+
                     timeConverter.updateStatus(SETTING);
                     backgroundColorChange_default();
+
                 }
             });
 
@@ -168,6 +172,7 @@ public class TopFragment extends Fragment {
                         //トータル時間から時分秒に変換
                         timeConverter.distribution();
                         timeConverter.updateTime();
+
 
                         if (timeConverter.get_S() <= 0) {
                             timeConverter.updateStatus(INTERVAL);
