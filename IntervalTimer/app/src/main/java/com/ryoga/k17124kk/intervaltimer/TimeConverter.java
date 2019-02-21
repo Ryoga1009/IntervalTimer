@@ -23,6 +23,7 @@ public class TimeConverter extends BaseObservable {
 
     private TimerStatus currentStatus = TimerStatus.SETTING;//現在の状態
 
+
     //バインディング
     @Bindable
     public boolean isRunnig = false;//設定中なのかそうじゃないのか

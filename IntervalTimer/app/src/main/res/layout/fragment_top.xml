@@ -30,18 +30,44 @@
             tools:layout_editor_absoluteY="8dp">
 
             <TextView
+
                 android:id="@+id/textView_time"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="80dp"
-                android:paddingBottom="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:gravity="center"
                 android:text="@{timeconverter.timerString}"
-                android:textAlignment="center"
-                android:textSize="56sp" />
+                android:textSize="56sp"
+                tools:text="0：0：0" />
+
+            <RelativeLayout
+                android:id="@+id/AnimationArea"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <ImageView
+                    android:id="@+id/ball"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/sport_tennis_ball" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorAccent"></View>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -72,6 +98,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:orientation="horizontal">
 
                 <Spinner
@@ -80,7 +108,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:enabled="@{!timeconverter.isRunnig}"
-                    android:entries="@array/time" />
+                    android:entries="@array/time"
+                    android:textAlignment="textEnd" />
 
                 <Spinner
                     android:id="@+id/spinner_m"
@@ -88,7 +117,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:enabled="@{!timeconverter.isRunnig}"
-                    android:entries="@array/time" />
+                    android:entries="@array/time"
+                    android:textAlignment="textEnd" />
 
                 <Spinner
                     android:id="@+id/spinner_s"
@@ -96,12 +126,15 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:enabled="@{!timeconverter.isRunnig}"
-                    android:entries="@array/time" />
+                    android:entries="@array/time"
+                    android:textAlignment="textEnd" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:orientation="horizontal"
                 android:paddingTop="40dp">
 
@@ -119,12 +152,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:enabled="@{!timeconverter.isRunnig}"
-                    android:entries="@array/time" />
+                    android:entries="@array/time"
+                    android:textAlignment="textEnd" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
                 android:paddingTop="80dp">
 

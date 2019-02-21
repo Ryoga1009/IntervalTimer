@@ -109,7 +109,6 @@ public class TopFragment extends Fragment {
         private int interval;//カウントダウンループのインターバル
 
         private TimeConverter timeConverter;
-//        String status = "SETTING";//"COUNTDOWN"  "INTERVAL"
 
 
         public Task() {
@@ -121,6 +120,8 @@ public class TopFragment extends Fragment {
             binding.buttonStart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    BallAnimator.startAnimation(binding.AnimationArea.getWidth(), binding.AnimationArea.getHeight(), binding.ball);
 
                     //スピナーが全部0かどうかのチェック
                     if (!isSpinnerSelected()) {
