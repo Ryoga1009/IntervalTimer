@@ -121,12 +121,12 @@ public class TopFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    BallAnimator.startAnimation(binding.AnimationArea.getWidth(), binding.AnimationArea.getHeight(), binding.ball);
-
 
                     //スピナーが全部0かどうかのチェック
                     if (!isSpinnerSelected()) {
                         timeConverter.updateStatus(COUNTDOWN);
+                        BallAnimator.startAnimation(binding.AnimationArea.getWidth(), binding.AnimationArea.getHeight(), binding.ball);
+
                     } else {
                         Toast.makeText(getContext(), "時間を設定してください", Toast.LENGTH_SHORT).show();
                     }

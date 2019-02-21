@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 public class BallAnimator {
 
-    static int duration = 500;
+    static int duration = 450;
 
     static boolean isAnimation = false;
 
@@ -17,8 +17,6 @@ public class BallAnimator {
     public static void startAnimation(final float endX, final float endY, final ImageView ball) {
 
         //初期位置
-//        ViewCompat.animate(ball).translationX(0).translationY(0).setDuration(1);
-
         isAnimation = true;
 
 
