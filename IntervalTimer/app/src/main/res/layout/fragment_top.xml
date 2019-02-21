@@ -60,7 +60,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="24dp"
                 android:background="@color/colorAccent"></View>
 
             <LinearLayout
@@ -163,7 +163,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 android:orientation="horizontal"
-                android:paddingTop="80dp">
+                android:paddingTop="70dp">
 
                 <Button
                     android:id="@+id/button_stop"
