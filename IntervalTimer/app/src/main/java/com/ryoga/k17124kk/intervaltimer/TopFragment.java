@@ -176,6 +176,7 @@ public class TopFragment extends Fragment {
 
                         if (timeConverter.get_S() <= 0) {
                             timeConverter.updateStatus(INTERVAL);
+                            BallAnimator.cancelAnimation(binding.ball);
                         }
 
                     } else if (timeConverter.getCurrentStatus() == INTERVAL) {
@@ -198,6 +199,9 @@ public class TopFragment extends Fragment {
 
                             //背景色を白に戻す
                             backgroundColorChange_default();
+
+                            BallAnimator.startAnimation(binding.AnimationArea.getWidth(), binding.AnimationArea.getHeight(), binding.ball);
+
 
                         }
                     }
