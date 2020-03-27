@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 public class BallAnimator {
 
-    static int duration = 450;
+    static int duration = 448;
 
     static boolean isAnimation = false;
 
