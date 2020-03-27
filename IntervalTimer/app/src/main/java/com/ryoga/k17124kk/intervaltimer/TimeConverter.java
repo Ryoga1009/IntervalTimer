@@ -130,10 +130,11 @@ public class TimeConverter extends BaseObservable {
     }
 
 
-    //バインディングされたtextView用のて着ると更新と通知
+    //バインディングされたtextView用の更新と通知
     public void updateTime() {
         timerString = getTime_String();
         notifyPropertyChanged(BR.timerString);
+
     }
 
     public TimerStatus getCurrentStatus() {
@@ -166,6 +167,7 @@ public class TimeConverter extends BaseObservable {
         }
         //更新通知
         notifyPropertyChanged(BR.isRunnig);
+
     }
 
 
